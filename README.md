@@ -1,5 +1,5 @@
 Web so 1 VN
-<p>
+<p style="color:DodgerBlue;">
 if happen error<br>
 ! [rejected] master -> master (fetch first)
 error: failed to push some refs to ''
