@@ -1,25 +1,40 @@
 package com.tuanluc.controller;
 
+import com.tuanluc.entities.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class HomeController {
 
-    @RequestMapping("/")
-    public String showHomePage(Model model) {
-        model.addAttribute("title","Home Page");
+    @RequestMapping(value ={"/", "/home"})
+    public String showHomePage(@RequestParam(value = "mess", required = false) String mess, Model model) {
+        model.addAttribute("mess", mess);
+        model.addAttribute("title", "Home Page de dang nhap input user name \"luc\" to login");
         return "home";
     }
 
     @RequestMapping("/login")
-    public String showLoginPage(Model model) {
-        model.addAttribute("title","Login");
+    public String showLoginPage(@RequestParam(value = "mess", required = false) String mess, @ModelAttribute("user") User user, Model model) {
+        model.addAttribute("mess", mess);
+        model.addAttribute("title", "Login");
         return "login";
     }
+
+    @RequestMapping(value = "/handle-login", method = RequestMethod.POST)
+    public RedirectView handleLogin(@ModelAttribute("user") User user, ModelMap modelMap, RedirectAttributes redirectAttributes) {
+        if (user.getUserName().equals("luc")) {
+            redirectAttributes.addAttribute("mess", "Login successful");
+            return new RedirectView("home");
+        }
+        redirectAttributes.addAttribute("mess", "User name " + user.getUserName() + " is wrong");
+        return new RedirectView("login");
+    }
+
 
     @RequestMapping("/test1/{id}")
     public String test1(@PathVariable("id") int id, Model model) {
@@ -41,11 +56,5 @@ public class HomeController {
         return "test3";
     }
 
-
-//    @RequestMapping("/login")
-//    public String showLoginPage(Model model) {
-//        model.addAttribute("a","Title");
-//        return "login";
-//    }
 }
 

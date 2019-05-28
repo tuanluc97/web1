@@ -12,7 +12,7 @@ import com.tuanluc.service.UserService;
 public class UserController {
     @Autowired
     private UserService userService;
-    @RequestMapping(value={"/user-list"})
+    @RequestMapping(value={"/user", "/user-list"})
     public String listUser(Model model) {
         model.addAttribute("listUser", userService.findAll());
         return "user-list";
